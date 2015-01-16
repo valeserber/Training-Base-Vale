@@ -12,7 +12,7 @@ public class ParseRequestInterceptor implements RequestInterceptor{
     private static final String REST_API_KEY = "X-Parse-REST-API-Key";
     private static final String CONTENT_TYPE = "Content-Type";
 
-    private Context context;
+    private final Context context;
 
     public ParseRequestInterceptor(Context context) {
         this.context = context;

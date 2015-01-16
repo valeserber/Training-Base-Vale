@@ -18,6 +18,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.SignUpActivity"
+            android:label="@string/sign_up"
+            android:theme="@style/SignUpActionBarTheme"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
             android:name=".activities.UserActivity"
             android:label="@string/wolox"
             android:theme="@style/SignUpActionBarTheme">

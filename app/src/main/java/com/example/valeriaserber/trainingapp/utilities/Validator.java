@@ -2,9 +2,7 @@ package com.example.valeriaserber.trainingapp.utilities;
 
 import android.content.Context;
 import android.text.Editable;
-import android.view.Gravity;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
 
@@ -26,7 +24,7 @@ public class Validator {
 
     public static boolean validateEmail(EditText emailField, Context context){
         emailField.setError(null);
-        if(!Pattern.matches(EMAIL_REGEX, emailField.getText().toString().trim())){
+        if (!Pattern.matches(EMAIL_REGEX, emailField.getText().toString().trim())) {
             emailField.setError(context.getString(R.string.email_invalid));
             return false;
         }
@@ -36,14 +34,11 @@ public class Validator {
     public static boolean validatePasswords(EditText passwordField, EditText confirmPasswordField, Context context){
         String password = passwordField.getText().toString().trim();
         String confirmPassword = confirmPasswordField.getText().toString().trim();
-
         passwordField.setError(null);
         confirmPasswordField.setError(null);
 
-        if(!password.equals(confirmPassword)){
-            confirmPasswordField.setError(context.getString(R.string.equal_passwords));
-            return false;
-        }
-        return true;
+        if (password.equals(confirmPassword)) return true;
+        confirmPasswordField.setError(context.getString(R.string.equal_passwords));
+        return false;
     }
 }

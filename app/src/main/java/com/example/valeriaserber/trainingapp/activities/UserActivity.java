@@ -22,11 +22,8 @@ import com.example.valeriaserber.trainingapp.utilities.UserUtility;
 
 public class UserActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-    public final static String USER_EMAIL = "com.example.valeriaserber.trainingapp.MESSAGE";
-
     private static final int TAB_COUNT = 2;
 
-    private String mEmail;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
@@ -34,9 +31,8 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        setUi();
 
-        Intent intent = getIntent();
-        mEmail = intent.getStringExtra(USER_EMAIL);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -46,14 +42,6 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
-
-        setUi();
         setListeners(actionBar);
     }
 
@@ -68,6 +56,12 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                 actionBar.setSelectedNavigationItem(position);
             }
         });
+        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+            actionBar.addTab(
+                    actionBar.newTab()
+                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+                            .setTabListener(this));
+        }
     }
 
     @Override
@@ -78,9 +72,7 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_logout) {
+        if (item.getItemId() == R.id.action_logout) {
             UserUtility.removeUserData(getApplicationContext());
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -100,10 +92,6 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    public String getUserEmail(){
-        return mEmail;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

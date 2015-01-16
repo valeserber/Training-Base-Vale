@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.valeriaserber.trainingapp.activities.SignUpActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="15dp"
+    android:paddingLeft="15dp"
+    android:paddingTop="10dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/activity_signup_email_text_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/text_email"/>
+
+                <EditText
+                    android:id="@+id/activity_signup_password_text_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textPassword"
+                    android:hint="@string/text_password"/>
+
+                <EditText
+                    android:id="@+id/activity_signup_confirm_pass_text_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textPassword"
+                    android:hint="@string/text_confirm_password"/>
+
+                <TextView
+                    android:id="@+id/activity_signup_terms_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/text_terms_conditions"
+                    android:textColor="@color/black"/>
+
+                <Button
+                    android:id="@+id/activity_signup_join_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/join"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:background="@drawable/signup_button"/>
+
+    </LinearLayout>
+</ScrollView>

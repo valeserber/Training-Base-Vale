@@ -28,6 +28,7 @@ public class LoginActivity extends Activity {
     private EditText mPassword;
     private TextView mTermsConditions;
     private Button mLoginButton;
+    private Button mSignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class LoginActivity extends Activity {
         setListeners();
         SessionObject session = UserUtility.getUserData(this);
         if (session != null) {
-            startUserActivity(session);
+            startUserActivity();
         }
     }
 
@@ -46,6 +47,7 @@ public class LoginActivity extends Activity {
         mEmail = (EditText) findViewById(R.id.activity_login_email_text_edit);
         mPassword = (EditText) findViewById(R.id.activity_login_password_text_edit);
         mLoginButton = (Button) findViewById(R.id.activity_login_login_button);
+        mSignUpButton = (Button) findViewById(R.id.activity_login_signup_button);
     }
 
     private void setListeners() {
@@ -55,11 +57,15 @@ public class LoginActivity extends Activity {
                 logInButton(view);
             }
         });
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                signUpButton(view);
+            }
+        });
     }
 
-    private void startUserActivity(SessionObject sessionObject) {
+    private void startUserActivity() {
         Intent intent = new Intent(this, UserActivity.class);
-        intent.putExtra(UserActivity.USER_EMAIL, sessionObject.getUsername());
         startActivity(intent);
     }
 
@@ -80,7 +86,7 @@ public class LoginActivity extends Activity {
             @Override
             public void success(SessionObject sessionObject, Response response) {
                 UserUtility.saveUserData(sessionObject, getApplicationContext());
-                startUserActivity(sessionObject);
+                startUserActivity();
             }
 
             @Override
@@ -100,9 +106,14 @@ public class LoginActivity extends Activity {
     }
 
     private void showToast(CharSequence text){
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+    public void signUpButton(View view) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 }
