@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">TrainingApp</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="text_email">E-mail (required)</string>
@@ -19,8 +18,8 @@
     <string name="invalid_login">Invalid email or password</string>
     <string name="equal_passwords">Passwords must be the same</string>
     <string name="email_exists">Email already exists</string>
+    <string name="network_error">Network error</string>
     <string name="wolox">Wolox</string>
-    <string name="title_section1">News</string>
-    <string name="title_section2">Profile</string>
-
+    <string name="news">News</string>
+    <string name="profile">Profile</string>
 </resources>
