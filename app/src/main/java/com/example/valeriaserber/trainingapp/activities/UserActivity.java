@@ -3,6 +3,7 @@ package com.example.valeriaserber.trainingapp.activities;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,8 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.valeriaserber.trainingapp.R;
+import com.example.valeriaserber.trainingapp.fragments.ProfileFragment;
 import com.example.valeriaserber.trainingapp.utilities.UserUtility;
 
 public class UserActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -59,9 +63,10 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+                            .setCustomView(mSectionsPagerAdapter.getCustomView(i))
                             .setTabListener(this));
         }
+
     }
 
     @Override
@@ -102,7 +107,13 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case 0:
+                    return PlaceholderFragment.newInstance(position + 1);
+                case 1:
+                    return new ProfileFragment();
+            }
+            return null;
         }
 
         @Override
@@ -121,6 +132,27 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
             }
             return null;
         }
+
+        public int getIcon(int position) {
+            switch (position) {
+                case 0:
+                    return R.drawable.news_button;
+                case 1:
+                    return R.drawable.profile_button;
+            }
+            return -1;
+        }
+
+        public View getCustomView(int position) {
+            View tabView = getLayoutInflater().inflate(R.layout.tabs_user, null);
+            TextView tabText = (TextView) tabView.findViewById(R.id.tab_title);
+            tabText.setText(getPageTitle(position));
+
+            ImageView tabImage = (ImageView) tabView.findViewById(R.id.tab_icon);
+            tabImage.setImageDrawable(getResources().getDrawable(getIcon(position)));
+            return tabView;
+        }
+
     }
 
     public static class PlaceholderFragment extends Fragment {
