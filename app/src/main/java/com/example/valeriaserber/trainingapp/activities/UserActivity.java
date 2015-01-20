@@ -3,7 +3,6 @@ package com.example.valeriaserber.trainingapp.activities;
 import java.util.Locale;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,15 +19,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
+import com.example.valeriaserber.trainingapp.TrainingApplication;
 import com.example.valeriaserber.trainingapp.fragments.ProfileFragment;
+import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.utilities.RestError;
 import com.example.valeriaserber.trainingapp.utilities.UserUtility;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class UserActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     private static final int TAB_COUNT = 2;
 
+    private TextView mName;
+    private String mObjectId;
+    private SessionObject mUser;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
@@ -67,6 +78,41 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                             .setTabListener(this));
         }
 
+    }
+
+    public void getUser() {
+        SessionObject session = UserUtility.getUserData(this);
+        mObjectId = session.getObjectId();
+
+        TrainingApplication.sUserService.getUser(mObjectId, new Callback<SessionObject>() {
+            @Override
+            public void success(SessionObject sessionObject, Response response) {
+                mUser = sessionObject;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error.getResponse() != null) {
+                    RestError body = (RestError) error.getBodyAs(RestError.class);
+                    switch (body.code) {
+                        case 101:
+                            //object not found
+                            showToast(getString(R.string.invalid_login));
+                            return;
+                        default:
+                            showToast(getString(R.string.network_error));
+                            return;
+                    }
+                }
+            }
+        });
+    }
+
+    private void showToast(CharSequence text){
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     @Override

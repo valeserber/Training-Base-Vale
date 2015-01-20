@@ -5,9 +5,10 @@ import com.example.valeriaserber.trainingapp.model.SignUpObject;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.http.Body;
-import retrofit.http.POST;
 
 public interface UserService {
 
@@ -16,4 +17,7 @@ public interface UserService {
 
     @POST("/1/users")
     public void signUp(@Body SignUpObject user, Callback<SessionObject> cb);
+
+    @GET("/1/users/{id}")
+    public void getUser(@Path("id") String objectId, Callback<SessionObject> cb);
 }

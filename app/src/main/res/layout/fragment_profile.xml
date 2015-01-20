@@ -29,66 +29,74 @@
 
                 <ImageView
                     android:id="@+id/fragment_profile_picture_image_view"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/login_logo"/>
+
+                <TextView
+                    android:id="@+id/fragment_profile_location_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fragment_profile_location_image_view"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="@color/gray"
+                    android:text="Milano, Italy"/>
 
                 <TextView
                     android:id="@+id/fragment_profile_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/fragment_profile_picture_image_view"
                     android:layout_above="@id/fragment_profile_location_text_view"
-                    android:text="pepe"/>
+                    android:textSize="20sp"
+
+                    android:textColor="@color/blue"
+                    android:text="Pepe Ramirez"/>
 
                 <ImageView
-                    android:id="@+id/fragment_profile_location_button"
+                    android:id="@+id/fragment_profile_location_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="3dp"
                     android:layout_toRightOf="@+id/fragment_profile_picture_image_view"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/location"/>
 
-                <TextView
-                    android:id="@+id/fragment_profile_location_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/fragment_profile_location_button"
-                    android:layout_alignParentBottom="true"
-                    android:text="lelell"/>
-
-                <ImageView
+                <Button
                     android:id="@+id/fragment_profile_edit_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/edit"/>
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/edit_button"
+                    android:drawableTop="@drawable/edit"/>
+
             </RelativeLayout>
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="1"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/fragment_profile_terms_text_view"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="15dp"
-                android:text="lalalalalal"/>
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="@string/description"/>
         </LinearLayout>
 
     </LinearLayout>
