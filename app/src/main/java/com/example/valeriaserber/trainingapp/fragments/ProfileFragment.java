@@ -1,11 +1,8 @@
 package com.example.valeriaserber.trainingapp.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.utilities.CircleTransformation;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
@@ -63,6 +61,9 @@ public class ProfileFragment extends Fragment {
         if (mUser.getPicture() != null) {
             Picasso.with(getActivity().getApplicationContext())
                     .load(mUser.getPicture())
+                    .transform(new CircleTransformation())
+                    .placeholder(R.drawable.profile_image_view_empty)
+                    .error(R.drawable.profile_image_view_error)
                     .into(mPicture);
         }
     }
