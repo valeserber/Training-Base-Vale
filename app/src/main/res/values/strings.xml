@@ -22,6 +22,7 @@
     <string name="wolox">Wolox</string>
     <string name="news">News</string>
     <string name="profile">Profile</string>
-    <string name="description">Lorem ipsum dolor sit amet, consec tetuer adip iscing elit. Aenean commo dolor sit amet, consec tetuer
-        Lorem ipsum dolor sit amet, conse</string>
+    <string name="user_name">Add your name</string>
+    <string name="user_location">Add your location</string>
+    <string name="user_description">Add a profile description</string>
 </resources>

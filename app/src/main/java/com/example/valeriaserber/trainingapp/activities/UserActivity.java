@@ -157,7 +157,7 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                 case 0:
                     return PlaceholderFragment.newInstance(position + 1);
                 case 1:
-                    return new ProfileFragment();
+                    return new ProfileFragment().newInstance(UserUtility.getUserData(getApplicationContext()));
             }
             return null;
         }

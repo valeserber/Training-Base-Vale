@@ -43,7 +43,7 @@
                     android:layout_toRightOf="@+id/fragment_profile_location_image_view"
                     android:layout_alignParentBottom="true"
                     android:textColor="@color/gray"
-                    android:text="Milano, Italy"/>
+                    android:text="@string/user_location"/>
 
                 <TextView
                     android:id="@+id/fragment_profile_name_text_view"
@@ -56,7 +56,7 @@
                     android:textSize="20sp"
 
                     android:textColor="@color/blue"
-                    android:text="Pepe Ramirez"/>
+                    android:text="@string/user_name"/>
 
                 <ImageView
                     android:id="@+id/fragment_profile_location_image_view"
@@ -74,7 +74,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/edit_button"
                     android:drawableTop="@drawable/edit"/>
 
@@ -86,7 +86,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/fragment_profile_terms_text_view"
+                android:id="@+id/fragment_profile_description_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -96,7 +96,7 @@
                 android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="@string/description"/>
+                android:text="@string/user_description"/>
         </LinearLayout>
 
     </LinearLayout>
