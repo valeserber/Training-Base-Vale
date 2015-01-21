@@ -1,3 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TrainingApp</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="text_email">E-mail (required)</string>
+    <string name="text_password">Password (required)</string>
+    <string name="text_confirm_password">Confirm Password (required)</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="log_out">Log out</string>
+    <string name="join">Join</string>
+    <string name="text_terms_conditions">By joining you agree to our <a href="http://www.wolox.com.ar">Terms &amp; Conditions</a></string>
+    <string name="email_required">Email is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="confirm_password_required">Confirm password is required</string>
+    <string name="all_required">Every field is required</string>
+    <string name="email_invalid">Invalid email</string>
+    <string name="invalid_login">Invalid email or password</string>
+    <string name="equal_passwords">Passwords must be the same</string>
+    <string name="email_exists">Email already exists</string>
+    <string name="network_error">Network error</string>
+    <string name="wolox">Wolox</string>
+    <string name="news">News</string>
+    <string name="profile">Profile</string>
 </resources>

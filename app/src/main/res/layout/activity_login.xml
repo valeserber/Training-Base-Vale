@@ -1,0 +1,102 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.valeriaserber.trainingapp.activities.LoginActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="top"
+                android:alpha="0.5"
+                android:src="@drawable/login_picture"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="top"
+                android:alpha="0.8"
+                android:background="@drawable/picture_gradient"/>
+
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:src="@drawable/login_logo"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/activity_login_email_text_edit"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textEmailAddress"
+                        android:hint="@string/text_email"
+                        android:singleLine="true"/>
+
+                    <EditText
+                        android:id="@+id/activity_login_password_text_edit"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textPassword"
+                        android:hint="@string/text_password"
+                        android:singleLine="true"/>
+
+                    <Button
+                        android:id="@+id/activity_login_login_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/log_in"
+                        android:textAllCaps="true"
+                        android:background="@drawable/login_button"/>
+
+                    <Button
+                        android:id="@+id/activity_login_signup_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/sign_up"
+                        android:textColor="@color/white"
+                        android:textAllCaps="true"
+                        android:background="@drawable/signup_button"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/activity_login_terms_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/text_terms_conditions"/>
+            </LinearLayout>
+    </LinearLayout>
+</ScrollView>
