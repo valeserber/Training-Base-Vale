@@ -8,8 +8,8 @@
         android:right="7dp"
         android:bottom="7dp"/>
     <size
-        android:width="50dp"
-        android:height="50dp"/>
+        android:width="100dp"
+        android:height="100dp"/>
     <stroke
         android:width="0.01dp"
         android:color="@color/gray"
