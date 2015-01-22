@@ -37,7 +37,6 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
 
     private static final int TAB_COUNT = 2;
 
-    private TextView mName;
     private String mObjectId;
     private SessionObject mUser;
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -97,7 +96,6 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                     RestError body = (RestError) error.getBodyAs(RestError.class);
                     switch (body.code) {
                         case 101:
-                            //object not found
                             showToast(getString(R.string.invalid_login));
                             return;
                         default:
