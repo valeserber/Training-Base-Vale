@@ -24,7 +24,10 @@ public class TrainingApplication extends Application {
     private static RequestInterceptor sParseRequestInterceptor;
     private static Context sContext;
 
-    static {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        TrainingApplication.sContext = getApplicationContext();
         buildRestServices();
     }
 
@@ -47,11 +50,5 @@ public class TrainingApplication extends Application {
 
     public static Context getAppContext() {
         return TrainingApplication.sContext;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        TrainingApplication.sContext = getApplicationContext();
     }
 }
