@@ -28,5 +28,11 @@
             android:label="@string/wolox"
             android:theme="@style/SignUpActionBarTheme">
         </activity>
+        <activity
+            android:name=".activities.PictureActivity"
+            android:label="@string/wolox"
+            android:parentActivityName=".activities.UserActivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 </manifest>

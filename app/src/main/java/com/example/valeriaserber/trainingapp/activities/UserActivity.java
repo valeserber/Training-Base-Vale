@@ -32,7 +32,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UserActivity extends ActionBarActivity implements ActionBar.TabListener {
+
+public class UserActivity extends ActionBarActivity implements ActionBar.TabListener, ProfileFragment.OnPictureSelectedListener {
 
     private static final int TAB_COUNT = 2;
 
@@ -143,6 +144,13 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void onPictureSelected(String picture) {
+        Intent intent = new Intent(this, PictureActivity.class);
+        intent.putExtra(PictureActivity.PICTURE_SOURCE, picture);
+        startActivity(intent);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

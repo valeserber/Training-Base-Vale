@@ -11,6 +11,7 @@ public class SessionObject implements Serializable{
     private String location;
     private String description;
     private String picture;
+    private String cover;
 
     public String getObjectId() {
         return objectId;
@@ -40,8 +41,10 @@ public class SessionObject implements Serializable{
         return picture;
     }
 
+    public String getCover() { return cover; }
+
     public SessionObject(String objectId, String sessionToken, String username, String name,
-                         String location, String description, String picture) {
+                         String location, String description, String picture, String cover) {
         this.objectId = objectId;
         this.sessionToken = sessionToken;
         this.username = username;
@@ -49,6 +52,7 @@ public class SessionObject implements Serializable{
         this.location = location;
         this.description = description;
         this.picture = picture;
+        this.cover = cover;
     }
 
     public void setUsername(String username) {

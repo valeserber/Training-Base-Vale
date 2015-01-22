@@ -1,5 +1,6 @@
 package com.example.valeriaserber.trainingapp.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,9 @@ public class ProfileFragment extends Fragment {
     private TextView mLocation;
     private TextView mDescription;
     private ImageView mPicture;
+    private ImageView mCover;
     private SessionObject mUser;
+    private OnPictureSelectedListener mCallback;
 
     public static ProfileFragment newInstance(SessionObject user) {
         ProfileFragment f = new ProfileFragment();
@@ -43,8 +46,24 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         setUi(rootView);
+        setListeners();
         init();
         return rootView;
+    }
+
+    private void setListeners() {
+        mPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onPictureSelected(mUser.getPicture());
+            }
+        });
+        mCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onPictureSelected(mUser.getCover());
+            }
+        });
     }
 
     private void setUi(View rootView) {
@@ -52,6 +71,7 @@ public class ProfileFragment extends Fragment {
         mLocation = (TextView) rootView.findViewById(R.id.fragment_profile_location_text_view);
         mDescription = (TextView) rootView.findViewById(R.id.fragment_profile_description_text_view);
         mPicture = (ImageView) rootView.findViewById(R.id.fragment_profile_picture_image_view);
+        mCover = (ImageView) rootView.findViewById(R.id.fragment_profile_cover_image_view);
     }
 
     private void init() {
@@ -66,5 +86,25 @@ public class ProfileFragment extends Fragment {
                     .error(R.drawable.profile_image_view_error)
                     .into(mPicture);
         }
+        if (mUser.getCover() != null) {
+            Picasso.with(getActivity().getApplicationContext())
+                    .load(mUser.getCover())
+                    .into(mCover);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mCallback = (OnPictureSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    public interface OnPictureSelectedListener {
+        public void onPictureSelected(String picture);
     }
 }

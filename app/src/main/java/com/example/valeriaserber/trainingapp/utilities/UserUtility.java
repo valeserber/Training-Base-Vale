@@ -16,6 +16,7 @@ public class UserUtility {
     public static final String DESCRIPTION = "Description";
     public static final String NAME = "Name";
     public static final String PICTURE = "Picture";
+    public static final String COVER = "Cover";
 
     public static void saveUserData(SessionObject user, Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).edit();
@@ -26,6 +27,7 @@ public class UserUtility {
         editor.putString(LOCATION, user.getLocation());
         editor.putString(DESCRIPTION, user.getDescription());
         editor.putString(PICTURE, user.getPicture());
+        editor.putString(COVER, user.getCover());
         editor.commit();
     }
 
@@ -39,9 +41,10 @@ public class UserUtility {
         String location = prefs.getString(LOCATION, null);
         String description = prefs.getString(DESCRIPTION, null);
         String picture = prefs.getString(PICTURE, null);
+        String cover = prefs.getString(COVER, null);
 
         if (objectId != null && sessionToken != null && username != null) {
-            SessionObject user = new SessionObject(objectId, sessionToken, username, name, location, description, picture);
+            SessionObject user = new SessionObject(objectId, sessionToken, username, name, location, description, picture, cover);
             return user;
         }
         return null;
