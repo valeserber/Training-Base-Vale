@@ -2,7 +2,7 @@ package com.example.valeriaserber.trainingapp.model;
 
 import java.io.Serializable;
 
-public class SessionObject implements Serializable{
+public class SessionObject implements Serializable {
 
     private String objectId;
     private String sessionToken;
@@ -42,6 +42,9 @@ public class SessionObject implements Serializable{
     }
 
     public String getCover() { return cover; }
+
+    public SessionObject() {
+    }
 
     public SessionObject(String objectId, String sessionToken, String username, String name,
                          String location, String description, String picture, String cover) {

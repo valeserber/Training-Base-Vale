@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,7 +34,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class UserActivity extends ActionBarActivity implements ActionBar.TabListener, ProfileFragment.OnPictureSelectedListener {
+public class UserActivity extends ActionBarActivity
+        implements ActionBar.TabListener, ProfileFragment.OnPictureSelectedListener {
 
     private static final int TAB_COUNT = 2;
 
@@ -48,16 +50,13 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
         setContentView(R.layout.activity_user);
         setUi();
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setLogo(R.drawable.topbar_logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        setListeners(actionBar);
+        getUser();
     }
 
     private void setUi() {
@@ -77,10 +76,9 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                             .setCustomView(mSectionsPagerAdapter.getCustomView(i))
                             .setTabListener(this));
         }
-
     }
 
-    public void getUser() {
+    private void getUser() {
         SessionObject session = UserUtility.getUserData(this);
         mObjectId = session.getObjectId();
 
@@ -88,20 +86,22 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
             @Override
             public void success(SessionObject sessionObject, Response response) {
                 mUser = sessionObject;
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+                setListeners(getSupportActionBar());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                if (error.getResponse() != null) {
-                    RestError body = (RestError) error.getBodyAs(RestError.class);
-                    switch (body.code) {
-                        case 101:
-                            showToast(getString(R.string.invalid_login));
-                            return;
-                        default:
-                            showToast(getString(R.string.network_error));
-                            return;
-                    }
+                if (error.getResponse() == null) return;
+                RestError body = (RestError) error.getBodyAs(RestError.class);
+                switch (body.code) {
+                    case 101:
+                        showToast(getString(R.string.invalid_login));
+                        return;
+                    default:
+                        showToast(getString(R.string.network_error));
+                        return;
                 }
             }
         });
@@ -163,7 +163,7 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                 case 0:
                     return PlaceholderFragment.newInstance(position + 1);
                 case 1:
-                    return new ProfileFragment().newInstance(UserUtility.getUserData(getApplicationContext()));
+                    return new ProfileFragment().newInstance(mUser);
             }
             return null;
         }
@@ -198,13 +198,11 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
         public View getCustomView(int position) {
             View tabView = getLayoutInflater().inflate(R.layout.tabs_user, null);
             TextView tabText = (TextView) tabView.findViewById(R.id.tab_title);
-            tabText.setText(getPageTitle(position));
-
             ImageView tabImage = (ImageView) tabView.findViewById(R.id.tab_icon);
+            tabText.setText(getPageTitle(position));
             tabImage.setImageDrawable(getResources().getDrawable(getIcon(position)));
             return tabView;
         }
-
     }
 
     public static class PlaceholderFragment extends Fragment {
