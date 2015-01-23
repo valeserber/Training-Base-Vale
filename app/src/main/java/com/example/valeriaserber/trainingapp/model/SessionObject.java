@@ -43,6 +43,9 @@ public class SessionObject implements Serializable{
 
     public String getCover() { return cover; }
 
+    public SessionObject() {
+    }
+
     public SessionObject(String objectId, String sessionToken, String username, String name,
                          String location, String description, String picture, String cover) {
         this.objectId = objectId;

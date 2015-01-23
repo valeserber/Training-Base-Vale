@@ -17,7 +17,6 @@ public class CircleTransformation implements com.squareup.picasso.Transformation
         if (squaredBitmap != source) {
             source.recycle();
         }
-
         Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
 
         Canvas canvas = new Canvas(bitmap);
