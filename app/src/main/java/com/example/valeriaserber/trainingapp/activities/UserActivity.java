@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,8 +23,9 @@ import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
+import com.example.valeriaserber.trainingapp.fragments.NewsFragment;
 import com.example.valeriaserber.trainingapp.fragments.ProfileFragment;
-import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.model.User;
 import com.example.valeriaserber.trainingapp.utilities.RestError;
 import com.example.valeriaserber.trainingapp.utilities.UserUtility;
 
@@ -40,7 +40,7 @@ public class UserActivity extends ActionBarActivity
     private static final int TAB_COUNT = 2;
 
     private String mObjectId;
-    private SessionObject mUser;
+    private User mUser;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
@@ -79,13 +79,13 @@ public class UserActivity extends ActionBarActivity
     }
 
     private void getUser() {
-        SessionObject session = UserUtility.getUserData(this);
+        User session = UserUtility.getUserData(this);
         mObjectId = session.getObjectId();
 
-        TrainingApplication.sUserService.getUser(mObjectId, new Callback<SessionObject>() {
+        TrainingApplication.sUserService.getUser(mObjectId, new Callback<User>() {
             @Override
-            public void success(SessionObject sessionObject, Response response) {
-                mUser = sessionObject;
+            public void success(User user, Response response) {
+                mUser = user;
                 mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                 mViewPager.setAdapter(mSectionsPagerAdapter);
                 setListeners(getSupportActionBar());
@@ -162,7 +162,7 @@ public class UserActivity extends ActionBarActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return new NewsFragment();
                 case 1:
                     return new ProfileFragment().newInstance(mUser);
             }

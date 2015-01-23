@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
-import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.model.User;
 import com.example.valeriaserber.trainingapp.model.SignUpObject;
 import com.example.valeriaserber.trainingapp.utilities.RestError;
 import com.example.valeriaserber.trainingapp.utilities.UserUtility;
@@ -91,11 +91,11 @@ public class SignUpActivity extends ActionBarActivity{
 
     private void signUp(final String email, String password) {
         SignUpObject user = new SignUpObject(email, password);
-        TrainingApplication.sUserService.signUp(user, new Callback<SessionObject>() {
+        TrainingApplication.sUserService.signUp(user, new Callback<User>() {
             @Override
-            public void success(SessionObject sessionObject, Response response) {
-                sessionObject.setUsername(email);
-                UserUtility.saveUserData(sessionObject, getApplicationContext());
+            public void success(User user, Response response) {
+                user.setUsername(email);
+                UserUtility.saveUserData(user, getApplicationContext());
                 startUserActivity();
             }
 
