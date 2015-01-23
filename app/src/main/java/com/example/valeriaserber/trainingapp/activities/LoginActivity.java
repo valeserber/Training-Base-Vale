@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
-import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.model.User;
 import com.example.valeriaserber.trainingapp.utilities.RestError;
 import com.example.valeriaserber.trainingapp.utilities.UserUtility;
 import com.example.valeriaserber.trainingapp.utilities.Validator;
@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
         setUi();
         setListeners();
-        SessionObject session = UserUtility.getUserData(this);
+        User session = UserUtility.getUserData(this);
         if (session != null) {
             startUserActivity();
         }
@@ -82,10 +82,10 @@ public class LoginActivity extends Activity {
     }
 
     private void logIn(String email, String password){
-        TrainingApplication.sUserService.logIn(email, password, new Callback<SessionObject>() {
+        TrainingApplication.sUserService.logIn(email, password, new Callback<User>() {
             @Override
-            public void success(SessionObject sessionObject, Response response) {
-                UserUtility.saveUserData(sessionObject, getApplicationContext());
+            public void success(User user, Response response) {
+                UserUtility.saveUserData(user, getApplicationContext());
                 startUserActivity();
             }
 
