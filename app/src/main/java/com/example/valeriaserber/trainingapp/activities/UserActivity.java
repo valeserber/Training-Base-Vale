@@ -161,7 +161,7 @@ public class UserActivity extends ActionBarActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new NewsFragment();
+                    return new NewsFragment().newInstance();
                 case 1:
                     return new ProfileFragment().newInstance(mUser);
             }

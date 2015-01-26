@@ -3,6 +3,7 @@ package com.example.valeriaserber.trainingapp;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.valeriaserber.trainingapp.services.NewsService;
 import com.example.valeriaserber.trainingapp.services.ParseRequestInterceptor;
 import com.example.valeriaserber.trainingapp.services.UserService;
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ public class TrainingApplication extends Application {
     private static final String RETROFIT = "RETROFIT";
 
     public static UserService sUserService;
+    public static NewsService sNewsService;
 
     private static Gson sGson;
     private static RequestInterceptor sParseRequestInterceptor;
@@ -46,6 +48,7 @@ public class TrainingApplication extends Application {
                 .setRequestInterceptor(sParseRequestInterceptor)
                 .build();
         sUserService = trainingAdapter.create(UserService.class);
+        sNewsService = trainingAdapter.create(NewsService.class);
     }
 
     public static Context getAppContext() {

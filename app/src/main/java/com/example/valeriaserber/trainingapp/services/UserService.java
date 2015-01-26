@@ -5,6 +5,7 @@ import com.example.valeriaserber.trainingapp.model.User;
 import com.example.valeriaserber.trainingapp.model.SignUpObject;
 
 import java.util.List;
+import java.util.Set;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -23,7 +24,4 @@ public interface UserService {
 
     @GET("/1/users/{id}")
     public void getUser(@Path("id") String objectId, Callback<User> cb);
-
-    @GET("/news")
-    public void getNews(Callback<List<News>> cb);
 }

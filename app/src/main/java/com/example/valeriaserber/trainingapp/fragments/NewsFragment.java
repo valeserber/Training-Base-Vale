@@ -3,7 +3,6 @@ package com.example.valeriaserber.trainingapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
 import com.example.valeriaserber.trainingapp.adapters.NewsAdapter;
 import com.example.valeriaserber.trainingapp.model.News;
+import com.example.valeriaserber.trainingapp.model.NewsObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -26,6 +25,13 @@ public class NewsFragment extends Fragment {
     private List<News> mNewsList;
     private ListView mNewsListView;
 
+    public static NewsFragment newInstance() {
+        NewsFragment f = new NewsFragment();
+        Bundle args = new Bundle();
+        f.setArguments(args);
+        return f;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +41,7 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         setUi(rootView);
-//        getNews();
-        List<News> news = new ArrayList<News>();
-        news.add(new News(1, "ash ketchup", 1,"peppepe", "http://bulbapedia.bulbagarden.net/wiki/File:Ash_XY.png"));
-        news.add(new News(2, "ash ketchup", 1,"peppepe", "http://bulbapedia.bulbagarden.net/wiki/File:Ash_XY.png"));
-        news.add(new News(3, "ash ketchup", 1,"peppepe", "http://bulbapedia.bulbagarden.net/wiki/File:Ash_XY.png"));
-        NewsAdapter adapter = new NewsAdapter(getActivity(), news);
-        mNewsListView.setAdapter(adapter);
+        getNews();
         return rootView;
     }
 
@@ -50,19 +50,19 @@ public class NewsFragment extends Fragment {
     }
 
     private void getNews() {
-        TrainingApplication.sUserService.getNews(new Callback<List<News>>() {
+        TrainingApplication.sNewsService.getNews( new Callback<NewsObject>() {
             @Override
-            public void success(List<News> newsList, Response response) {
-//                for(News n: newsList){
-//                    Log.v("lala", n.getTitle());
-//                }
-//                NewsAdapter adapter = new NewsAdapter(getActivity(), news);
-//                mNewsListView.setAdapter(adapter);
+            public void success(NewsObject newses, Response response) {
+                mNewsList = newses.getResults();
+                if (!mNewsList.isEmpty()) {
+                    NewsAdapter adapter = new NewsAdapter(getActivity().getApplicationContext(), mNewsList);
+                    mNewsListView.setAdapter(adapter);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+//                Log.v("lala", error.getMessage());
             }
         });
     }
