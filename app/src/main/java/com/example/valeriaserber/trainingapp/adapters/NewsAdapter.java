@@ -1,6 +1,7 @@
 package com.example.valeriaserber.trainingapp.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class NewsAdapter extends ArrayAdapter<News>{
     private ImageView mPicture;
     private TextView mTitle;
     private TextView mDescription;
+    private ImageView mLikeImage;
 
     public NewsAdapter(Context context, List<News> newsList) {
         super(context, 0, newsList);
@@ -45,6 +47,7 @@ public class NewsAdapter extends ArrayAdapter<News>{
         mPicture = (ImageView) rootView.findViewById(R.id.list_view_news_image_view);
         mTitle = (TextView) rootView.findViewById(R.id.list_view_news_title_text_view);
         mDescription = (TextView) rootView.findViewById(R.id.list_view_news_description_text_view);
+        mLikeImage = (ImageView) rootView.findViewById(R.id.list_view_news_like_image_view);
     }
 
     private void init(News news) {
@@ -52,6 +55,9 @@ public class NewsAdapter extends ArrayAdapter<News>{
         mDescription.setText(news.getText());
         Picasso.with(context)
                 .load(news.getPicture())
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.news_image_view_empty)
                 .into(mPicture);
     }
 }

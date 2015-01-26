@@ -3,10 +3,12 @@ package com.example.valeriaserber.trainingapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
@@ -62,8 +64,16 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-//                Log.v("lala", error.getMessage());
+                if (error.getResponse() == null) return;
+                showToast(getString(R.string.network_error));
             }
         });
+    }
+
+    private void showToast(CharSequence text){
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
