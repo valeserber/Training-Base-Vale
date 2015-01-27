@@ -11,19 +11,36 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
+import com.example.valeriaserber.trainingapp.TrainingApplication;
+import com.example.valeriaserber.trainingapp.fragments.ProfileFragment;
+import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.utilities.RestError;
 import com.example.valeriaserber.trainingapp.utilities.UserUtility;
 
-public class UserActivity extends ActionBarActivity implements ActionBar.TabListener {
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+
+public class UserActivity extends ActionBarActivity
+        implements ActionBar.TabListener, ProfileFragment.OnPictureSelectedListener {
 
     private static final int TAB_COUNT = 2;
 
+    private String mObjectId;
+    private SessionObject mUser;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
@@ -33,16 +50,13 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
         setContentView(R.layout.activity_user);
         setUi();
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setLogo(R.drawable.topbar_logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        setListeners(actionBar);
+        getUser();
     }
 
     private void setUi() {
@@ -59,9 +73,45 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             actionBar.addTab(
                     actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
+                            .setCustomView(mSectionsPagerAdapter.getCustomView(i))
                             .setTabListener(this));
         }
+    }
+
+    private void getUser() {
+        SessionObject session = UserUtility.getUserData(this);
+        mObjectId = session.getObjectId();
+
+        TrainingApplication.sUserService.getUser(mObjectId, new Callback<SessionObject>() {
+            @Override
+            public void success(SessionObject sessionObject, Response response) {
+                mUser = sessionObject;
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+                setListeners(getSupportActionBar());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error.getResponse() == null) return;
+                RestError body = (RestError) error.getBodyAs(RestError.class);
+                switch (body.code) {
+                    case 101:
+                        showToast(getString(R.string.invalid_login));
+                        return;
+                    default:
+                        showToast(getString(R.string.network_error));
+                        return;
+                }
+            }
+        });
+    }
+
+    private void showToast(CharSequence text){
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     @Override
@@ -94,6 +144,13 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
+    @Override
+    public void onPictureSelected(String picture) {
+        Intent intent = new Intent(this, PictureActivity.class);
+        intent.putExtra(PictureActivity.PICTURE_SOURCE, picture);
+        startActivity(intent);
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -102,7 +159,13 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case 0:
+                    return PlaceholderFragment.newInstance(position + 1);
+                case 1:
+                    return new ProfileFragment().newInstance(mUser);
+            }
+            return null;
         }
 
         @Override
@@ -120,6 +183,25 @@ public class UserActivity extends ActionBarActivity implements ActionBar.TabList
                     return getString(R.string.profile).toUpperCase(l);
             }
             return null;
+        }
+
+        public int getIcon(int position) {
+            switch (position) {
+                case 0:
+                    return R.drawable.news_button;
+                case 1:
+                    return R.drawable.profile_button;
+            }
+            return -1;
+        }
+
+        public View getCustomView(int position) {
+            View tabView = getLayoutInflater().inflate(R.layout.tabs_user, null);
+            TextView tabText = (TextView) tabView.findViewById(R.id.tab_title);
+            ImageView tabImage = (ImageView) tabView.findViewById(R.id.tab_icon);
+            tabText.setText(getPageTitle(position));
+            tabImage.setImageDrawable(getResources().getDrawable(getIcon(position)));
+            return tabView;
         }
     }
 
