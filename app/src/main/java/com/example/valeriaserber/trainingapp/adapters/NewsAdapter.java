@@ -1,11 +1,12 @@
 package com.example.valeriaserber.trainingapp.adapters;
 
 import android.content.Context;
-import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ public class NewsAdapter extends ArrayAdapter<News>{
     private ImageView mPicture;
     private TextView mTitle;
     private TextView mDescription;
-    private ImageView mLikeImage;
+    private Button mLikeButton;
 
     public NewsAdapter(Context context, List<News> newsList) {
         super(context, 0, newsList);
@@ -39,6 +40,7 @@ public class NewsAdapter extends ArrayAdapter<News>{
             convertView = inflater.inflate(R.layout.list_view_news, parent, false);
         }
         setUi(convertView);
+        setListeners();
         init(news);
         return convertView;
     }
@@ -47,7 +49,23 @@ public class NewsAdapter extends ArrayAdapter<News>{
         mPicture = (ImageView) rootView.findViewById(R.id.list_view_news_image_view);
         mTitle = (TextView) rootView.findViewById(R.id.list_view_news_title_text_view);
         mDescription = (TextView) rootView.findViewById(R.id.list_view_news_description_text_view);
-        mLikeImage = (ImageView) rootView.findViewById(R.id.list_view_news_like_image_view);
+        mLikeButton = (Button) rootView.findViewById(R.id.list_view_news_like_button);
+        mLikeButton.setSelected(false);
+    }
+
+    private void setListeners() {
+        mLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLikeButton.isPressed()) {
+                    mLikeButton.setPressed(false);
+                    mLikeButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.like_off, 0, 0);
+                } else{
+                    mLikeButton.setPressed(true);
+                    mLikeButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.like_on, 0, 0);
+                }
+            }
+        });
     }
 
     private void init(News news) {

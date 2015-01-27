@@ -51,14 +51,16 @@
         android:textColor="@color/gray"
         android:text="15m"/>
 
-    <ImageView
-        android:id="@+id/list_view_news_like_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/list_view_news_like_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@id/list_view_news_time_text_view"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="5dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/like_off"/>
-
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@color/transparent"
+        android:drawableTop="@drawable/news_like_button"/>
 </RelativeLayout>

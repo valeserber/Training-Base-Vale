@@ -8,5 +8,58 @@
         <ListView
             android:id="@+id/fragment_news_list_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:id="@+id/fragment_news_error_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/fragment_news_error_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/network_error"/>
+            <ImageView
+                android:id="@+id/fragment_news_error_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_below="@id/fragment_news_error_text_view"
+                android:src="@drawable/sad_face"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_news_empty_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/fragment_news_refresh_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/empty_list"/>
+            <Button
+                android:id="@+id/fragment_news_refresh_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_above="@id/fragment_news_refresh_text_view"
+                android:background="@color/transparent"
+                android:drawableTop="@drawable/refresh_button"/>
+            <ProgressBar
+                android:id="@+id/fragment_news_refresh_progress_bar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_above="@id/fragment_news_refresh_text_view"
+                android:visibility="gone"/>
+        </RelativeLayout>
 </FrameLayout>
