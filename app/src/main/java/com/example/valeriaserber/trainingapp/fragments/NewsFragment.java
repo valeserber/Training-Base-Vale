@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import retrofit.client.Response;
 
 public class NewsFragment extends Fragment {
 
-    public static final int ITEMS_PER_PAGE = 4;
+    public static final int ITEMS_PER_PAGE = 1;
 
     private List<News> mNewsList;
     private ListView mNewsListView;
@@ -35,6 +36,7 @@ public class NewsFragment extends Fragment {
     private ProgressBar mRefreshProgressBar;
     private View mEmptyView;
     private View mErrorView;
+    private View mFooterView;
     private SwipeRefreshLayout mSwipeView;
     private NewsAdapter mAdapter;
     private int itemsShown = 0;
@@ -54,6 +56,7 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        mFooterView = inflater.inflate(R.layout.list_view_footer, null, false);
         setUi(rootView);
         setListeners();
         loadNews();
@@ -107,6 +110,7 @@ public class NewsFragment extends Fragment {
 
             private void isScrollCompleted() {
                 if (this.currentVisibleItemCount > 0 && this.currentScrollState == SCROLL_STATE_IDLE) {
+                    addFooter();
                     loadNews();
                 }
             }
@@ -145,13 +149,23 @@ public class NewsFragment extends Fragment {
                     mNewsListView.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
+                removeFooter();
             }
 
             @Override
             public void failure(RetrofitError error) {
+                removeFooter();
                 loadErrorViews();
             }
         });
+    }
+
+    private void addFooter() {
+        mNewsListView.addFooterView(mFooterView);
+    }
+
+    private void removeFooter() {
+        mNewsListView.removeFooterView(mFooterView);
     }
 
     private void loadErrorViews() {
