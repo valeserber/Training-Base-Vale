@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,7 @@ public class NewsFragment extends Fragment {
     private SwipeRefreshLayout mSwipeView;
     private NewsAdapter mAdapter;
     private int itemsShown = 0;
-    private State mState;
+    private State mState = State.LOADED;
 
     public static NewsFragment newInstance() {
         NewsFragment f = new NewsFragment();
@@ -73,6 +72,19 @@ public class NewsFragment extends Fragment {
         mRefreshButton = (Button) rootView.findViewById(R.id.fragment_news_refresh_button);
         mRefreshProgressBar = (ProgressBar) rootView.findViewById(R.id.fragment_news_refresh_progress_bar);
         mSwipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_news_swipe);
+    }
+
+    private void refreshContent() {
+        itemsShown = 0;
+        mAdapter = null;
+        mSwipeView.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadNews();
+                mSwipeView.setRefreshing(false);
+            }
+        }, 2000);
     }
 
     private void setListeners() {
@@ -120,26 +132,29 @@ public class NewsFragment extends Fragment {
         });
     }
 
-    private void refreshContent() {
-        itemsShown = 0;
-        mAdapter = null;
-        mSwipeView.setRefreshing(true);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadNews();
-                mSwipeView.setRefreshing(false);
-            }
-        }, 2000);
-    }
-
     private void loadNews() {
         TrainingApplication.sNewsService.getNews(ITEMS_PER_PAGE, itemsShown, new Callback<NewsObject>() {
             @Override
             public void success(NewsObject newsObject, Response response) {
                 resetViews();
                 mNewsList = newsObject.getResults();
-                if (!mNewsList.isEmpty()) {
+                if (mNewsList.isEmpty() && itemsShown ==0) {
+                    mAdapter = null;
+                    mNewsListView.setAdapter(mAdapter);
+                    if (mState == State.LOADING) {
+                        removeFooter();
+                        mState = State.LOADED;
+                    }
+                    mNewsListView.setVisibility(View.GONE);
+                    mEmptyView.setVisibility(View.VISIBLE);
+                } else if (mNewsList.isEmpty() && itemsShown != 0) {
+                    if (mState == State.LOADING) {
+                        mNewsListView.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                        removeFooter();
+                        mState = State.LOADED;
+                    }
+                } else {
                     if (mAdapter == null) {
                         mAdapter = new NewsAdapter(getActivity().getApplicationContext(), mNewsList);
                     } else {
@@ -147,13 +162,12 @@ public class NewsFragment extends Fragment {
                     }
                     itemsShown += mNewsList.size();
                     mNewsListView.setAdapter(mAdapter);
+                    if (mState == State.LOADING) {
+                        removeFooter();
+                        mState = State.LOADED;
+                    }
                     mNewsListView.setVisibility(View.VISIBLE);
-                } else if (itemsShown == 0) {
-                    mNewsListView.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
                 }
-                mState = State.LOADED;
-                removeFooter();
             }
 
             @Override
@@ -172,9 +186,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void removeFooter() {
-        if (mState != State.LOADING) {
-            mNewsListView.removeFooterView(mFooterView);
-        }
+        mNewsListView.removeFooterView(mFooterView);
     }
 
     private void loadErrorViews() {
