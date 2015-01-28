@@ -30,6 +30,8 @@ public class NewsFragment extends Fragment {
 
     public static final int ITEMS_PER_PAGE = 4;
 
+    private enum State {LOADING, LOADED, ERROR}
+
     private List<News> mNewsList;
     private ListView mNewsListView;
     private Button mRefreshButton;
@@ -40,6 +42,7 @@ public class NewsFragment extends Fragment {
     private SwipeRefreshLayout mSwipeView;
     private NewsAdapter mAdapter;
     private int itemsShown = 0;
+    private State mState;
 
     public static NewsFragment newInstance() {
         NewsFragment f = new NewsFragment();
@@ -149,11 +152,13 @@ public class NewsFragment extends Fragment {
                     mNewsListView.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
+                mState = State.LOADED;
                 removeFooter();
             }
 
             @Override
             public void failure(RetrofitError error) {
+                mState = State.ERROR;
                 removeFooter();
                 loadErrorViews();
             }
@@ -161,11 +166,15 @@ public class NewsFragment extends Fragment {
     }
 
     private void addFooter() {
+        if (mState == State.LOADING) return;
+        mState = State.LOADING;
         mNewsListView.addFooterView(mFooterView);
     }
 
     private void removeFooter() {
-        mNewsListView.removeFooterView(mFooterView);
+        if (mState != State.LOADING) {
+            mNewsListView.removeFooterView(mFooterView);
+        }
     }
 
     private void loadErrorViews() {

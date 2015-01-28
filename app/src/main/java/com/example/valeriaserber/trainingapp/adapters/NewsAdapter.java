@@ -83,5 +83,6 @@ public class NewsAdapter extends ArrayAdapter<News>{
         for (News n : newsList) {
             this.add(n);
         }
+        notifyDataSetChanged();
     }
 }
