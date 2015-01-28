@@ -1,21 +1,17 @@
 package com.example.valeriaserber.trainingapp.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
@@ -31,12 +27,17 @@ import retrofit.client.Response;
 
 public class NewsFragment extends Fragment {
 
+    public static final int ITEMS_PER_PAGE = 4;
+
     private List<News> mNewsList;
     private ListView mNewsListView;
     private Button mRefreshButton;
     private ProgressBar mRefreshProgressBar;
     private View mEmptyView;
     private View mErrorView;
+    private SwipeRefreshLayout mSwipeView;
+    private NewsAdapter mAdapter;
+    private int itemsShown = 0;
 
     public static NewsFragment newInstance() {
         NewsFragment f = new NewsFragment();
@@ -55,7 +56,7 @@ public class NewsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         setUi(rootView);
         setListeners();
-        getNews();
+        loadNews();
         return rootView;
     }
 
@@ -65,51 +66,106 @@ public class NewsFragment extends Fragment {
         mNewsListView = (ListView) rootView.findViewById(R.id.fragment_news_list_view);
         mRefreshButton = (Button) rootView.findViewById(R.id.fragment_news_refresh_button);
         mRefreshProgressBar = (ProgressBar) rootView.findViewById(R.id.fragment_news_refresh_progress_bar);
+        mSwipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_news_swipe);
     }
 
     private void setListeners() {
-//        mNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.v("lala", "list view clicked "+String.valueOf(position));
-//            }
-//        });
         mRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRefreshButton.setVisibility(View.GONE);
                 mRefreshProgressBar.setVisibility(View.VISIBLE);
-                getNews();
+                loadNews();
+            }
+        });
+        mSwipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+        mNewsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            private int currentVisibleItemCount;
+            private int currentScrollState;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                this.currentScrollState = scrollState;
+                this.isScrollCompleted();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                this.currentVisibleItemCount = visibleItemCount;
+                if (firstVisibleItem == 0) {
+                    mSwipeView.setEnabled(true);
+                } else {
+                    mSwipeView.setEnabled(false);
+                }
+            }
+
+            private void isScrollCompleted() {
+                if (this.currentVisibleItemCount > 0 && this.currentScrollState == SCROLL_STATE_IDLE) {
+                    loadNews();
+                }
             }
         });
     }
 
-    private void getNews() {
-        TrainingApplication.sNewsService.getNews( new Callback<NewsObject>() {
+    private void refreshContent() {
+        itemsShown = 0;
+        mAdapter = null;
+        mSwipeView.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void success(NewsObject newses, Response response) {
-                mErrorView.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.GONE);
-                mRefreshProgressBar.setVisibility(View.GONE);
-                mRefreshButton.setVisibility(View.VISIBLE);
-                mNewsList = newses.getResults();
+            public void run() {
+                loadNews();
+                mSwipeView.setRefreshing(false);
+            }
+        }, 2000);
+    }
+
+    private void loadNews() {
+        TrainingApplication.sNewsService.getNews(ITEMS_PER_PAGE, itemsShown, new Callback<NewsObject>() {
+            @Override
+            public void success(NewsObject newsObject, Response response) {
+                resetViews();
+                mNewsList = newsObject.getResults();
                 if (!mNewsList.isEmpty()) {
-                    NewsAdapter adapter = new NewsAdapter(getActivity().getApplicationContext(), mNewsList);
-                    mNewsListView.setAdapter(adapter);
+                    if (mAdapter == null) {
+                        mAdapter = new NewsAdapter(getActivity().getApplicationContext(), mNewsList);
+                    } else {
+                        mAdapter.update(mNewsList);
+                    }
+                    itemsShown += mNewsList.size();
+                    mNewsListView.setAdapter(mAdapter);
                     mNewsListView.setVisibility(View.VISIBLE);
-                } else {
+                } else if (itemsShown == 0) {
+                    mNewsListView.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                mRefreshButton.setVisibility(View.VISIBLE);
-                mRefreshProgressBar.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.GONE);
-                mErrorView.setVisibility(View.VISIBLE);
-                mNewsListView.setVisibility(View.GONE);
+                loadErrorViews();
             }
         });
+    }
+
+    private void loadErrorViews() {
+        mRefreshButton.setVisibility(View.VISIBLE);
+        mErrorView.setVisibility(View.VISIBLE);
+        mRefreshProgressBar.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
+        mNewsListView.setVisibility(View.GONE);
+    }
+
+    private void resetViews() {
+        mErrorView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
+        mRefreshProgressBar.setVisibility(View.GONE);
+        mRefreshButton.setVisibility(View.VISIBLE);
     }
 }

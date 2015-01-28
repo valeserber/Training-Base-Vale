@@ -78,4 +78,10 @@ public class NewsAdapter extends ArrayAdapter<News>{
                 .placeholder(R.drawable.news_image_view_empty)
                 .into(mPicture);
     }
+
+    public void update(List<News> newsList) {
+        for (News n : newsList) {
+            this.add(n);
+        }
+    }
 }
