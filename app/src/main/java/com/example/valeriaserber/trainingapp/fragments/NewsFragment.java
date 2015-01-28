@@ -28,7 +28,7 @@ import retrofit.client.Response;
 
 public class NewsFragment extends Fragment {
 
-    public static final int ITEMS_PER_PAGE = 1;
+    public static final int ITEMS_PER_PAGE = 4;
 
     private List<News> mNewsList;
     private ListView mNewsListView;
