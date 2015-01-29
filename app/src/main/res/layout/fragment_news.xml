@@ -67,20 +67,30 @@
             android:layout_above="@id/fragment_news_refresh_text_view"
             android:visibility="gone"/>
     </RelativeLayout>
-    <Button
+    <RelativeLayout
+        android:id="@+id/fragment_news_add_button_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/add_button"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="22dp"
-        android:src="@drawable/add_sign"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="34dp"
-        android:src="@drawable/add_sign_2"/>
+        android:layout_gravity="bottom|end">
+        <Button
+            android:id="@+id/fragment_news_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/add_button"
+            android:background="@color/transparent"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginLeft="17dp"
+            android:src="@drawable/add_sign"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:src="@drawable/add_sign_2"/>
+    </RelativeLayout>
 </FrameLayout>

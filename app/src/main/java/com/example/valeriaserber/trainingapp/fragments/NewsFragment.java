@@ -1,5 +1,6 @@
 package com.example.valeriaserber.trainingapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.example.valeriaserber.trainingapp.R;
 import com.example.valeriaserber.trainingapp.TrainingApplication;
+import com.example.valeriaserber.trainingapp.activities.AddNewsActivity;
 import com.example.valeriaserber.trainingapp.adapters.NewsAdapter;
 import com.example.valeriaserber.trainingapp.model.News;
 import com.example.valeriaserber.trainingapp.model.NewsObject;
@@ -35,13 +37,15 @@ public class NewsFragment extends Fragment {
     private ListView mNewsListView;
     private Button mRefreshButton;
     private ProgressBar mRefreshProgressBar;
+    private Button mAddButton;
     private View mEmptyView;
     private View mErrorView;
     private View mFooterView;
+    private View mAddButtonView;
     private SwipeRefreshLayout mSwipeView;
     private NewsAdapter mAdapter;
-    private int itemsShown = 0;
     private State mState = State.LOADED;
+    private int itemsShown = 0;
 
     public static NewsFragment newInstance() {
         NewsFragment f = new NewsFragment();
@@ -68,10 +72,12 @@ public class NewsFragment extends Fragment {
     private void setUi(View rootView) {
         mEmptyView = rootView.findViewById(R.id.fragment_news_empty_container);
         mErrorView = rootView.findViewById(R.id.fragment_news_error_container);
+        mAddButtonView = rootView.findViewById(R.id.fragment_news_add_button_container);
         mNewsListView = (ListView) rootView.findViewById(R.id.fragment_news_list_view);
         mRefreshButton = (Button) rootView.findViewById(R.id.fragment_news_refresh_button);
         mRefreshProgressBar = (ProgressBar) rootView.findViewById(R.id.fragment_news_refresh_progress_bar);
         mSwipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_news_swipe);
+        mAddButton = (Button) rootView.findViewById(R.id.fragment_news_add_button);
     }
 
     private void refreshContent() {
@@ -100,6 +106,13 @@ public class NewsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 refreshContent();
+            }
+        });
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddNewsActivity.class);
+                startActivity(intent);
             }
         });
         mNewsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -139,34 +152,11 @@ public class NewsFragment extends Fragment {
                 resetViews();
                 mNewsList = newsObject.getResults();
                 if (mNewsList.isEmpty() && itemsShown ==0) {
-                    mAdapter = null;
-                    mNewsListView.setAdapter(mAdapter);
-                    if (mState == State.LOADING) {
-                        removeFooter();
-                        mState = State.LOADED;
-                    }
-                    mNewsListView.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
+                    loadEmptyView();
                 } else if (mNewsList.isEmpty() && itemsShown != 0) {
-                    if (mState == State.LOADING) {
-                        mNewsListView.setAdapter(mAdapter);
-                        mAdapter.notifyDataSetChanged();
-                        removeFooter();
-                        mState = State.LOADED;
-                    }
+                    hideLoadingFooter();
                 } else {
-                    if (mAdapter == null) {
-                        mAdapter = new NewsAdapter(getActivity().getApplicationContext(), mNewsList);
-                    } else {
-                        mAdapter.update(mNewsList);
-                    }
-                    itemsShown += mNewsList.size();
-                    mNewsListView.setAdapter(mAdapter);
-                    if (mState == State.LOADING) {
-                        removeFooter();
-                        mState = State.LOADED;
-                    }
-                    mNewsListView.setVisibility(View.VISIBLE);
+                    loadMoreNews();
                 }
             }
 
@@ -179,6 +169,21 @@ public class NewsFragment extends Fragment {
         });
     }
 
+    private void loadMoreNews() {
+        if (mAdapter == null) {
+            mAdapter = new NewsAdapter(getActivity().getApplicationContext(), mNewsList);
+        } else {
+            mAdapter.update(mNewsList);
+        }
+        itemsShown += mNewsList.size();
+        mNewsListView.setAdapter(mAdapter);
+        if (mState == State.LOADING) {
+            removeFooter();
+            mState = State.LOADED;
+        }
+        mNewsListView.setVisibility(View.VISIBLE);
+    }
+
     private void addFooter() {
         if (mState == State.LOADING) return;
         mState = State.LOADING;
@@ -189,12 +194,24 @@ public class NewsFragment extends Fragment {
         mNewsListView.removeFooterView(mFooterView);
     }
 
+    private void loadEmptyView() {
+        mAdapter = null;
+        mNewsListView.setAdapter(mAdapter);
+        if (mState == State.LOADING) {
+            removeFooter();
+            mState = State.LOADED;
+        }
+        mNewsListView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
+    }
+
     private void loadErrorViews() {
         mRefreshButton.setVisibility(View.VISIBLE);
         mErrorView.setVisibility(View.VISIBLE);
         mRefreshProgressBar.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.GONE);
         mNewsListView.setVisibility(View.GONE);
+        mAddButtonView.setVisibility(View.GONE);
     }
 
     private void resetViews() {
@@ -202,5 +219,15 @@ public class NewsFragment extends Fragment {
         mEmptyView.setVisibility(View.GONE);
         mRefreshProgressBar.setVisibility(View.GONE);
         mRefreshButton.setVisibility(View.VISIBLE);
+        mAddButtonView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingFooter() {
+        if (mState == State.LOADING) {
+            mNewsListView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
+            removeFooter();
+            mState = State.LOADED;
+        }
     }
 }

@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
             mCallback = (OnPictureSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement OnPictureSelectedListener");
         }
     }
 

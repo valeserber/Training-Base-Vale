@@ -31,8 +31,18 @@
         <activity
             android:name=".activities.PictureActivity"
             android:label="@string/wolox"
-            android:parentActivityName=".activities.UserActivity"
             android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.UserActivity" />
+        </activity>
+        <activity
+            android:name=".activities.AddNewsActivity"
+            android:label="@string/wolox"
+            android:theme="@style/SignUpActionBarTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.UserActivity" />
         </activity>
     </application>
 </manifest>
