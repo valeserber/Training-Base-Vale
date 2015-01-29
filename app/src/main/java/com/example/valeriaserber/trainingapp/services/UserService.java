@@ -1,11 +1,7 @@
 package com.example.valeriaserber.trainingapp.services;
 
-import com.example.valeriaserber.trainingapp.model.News;
 import com.example.valeriaserber.trainingapp.model.User;
 import com.example.valeriaserber.trainingapp.model.SignUpObject;
-
-import java.util.List;
-import java.util.Set;
 
 import retrofit.Callback;
 import retrofit.http.GET;
