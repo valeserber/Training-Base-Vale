@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.valeriaserber.trainingapp.R;
-import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.model.User;
 import com.example.valeriaserber.trainingapp.utilities.CircleTransformation;
 import com.squareup.picasso.Picasso;
 
@@ -24,10 +24,10 @@ public class ProfileFragment extends Fragment {
     private TextView mDescription;
     private ImageView mPicture;
     private ImageView mCover;
-    private SessionObject mUser;
+    private User mUser;
     private OnPictureSelectedListener mCallback;
 
-    public static ProfileFragment newInstance(SessionObject user) {
+    public static ProfileFragment newInstance(User user) {
         ProfileFragment f = new ProfileFragment();
         Bundle args = new Bundle();
         args.putSerializable(SESSION_OBJ, user);
@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() == null || !getArguments().containsKey(SESSION_OBJ)) return;
-        mUser = (SessionObject) getArguments().getSerializable(SESSION_OBJ);
+        mUser = (User) getArguments().getSerializable(SESSION_OBJ);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
             mCallback = (OnPictureSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement OnPictureSelectedListener");
         }
     }
 

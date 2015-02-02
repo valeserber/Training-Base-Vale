@@ -18,11 +18,13 @@
     <string name="invalid_login">Invalid email or password</string>
     <string name="equal_passwords">Passwords must be the same</string>
     <string name="email_exists">Email already exists</string>
-    <string name="network_error">Network error</string>
+    <string name="network_error">Sorry! Network error</string>
     <string name="wolox">Wolox</string>
     <string name="news">News</string>
     <string name="profile">Profile</string>
     <string name="user_name">Add your name</string>
     <string name="user_location">Add your location</string>
     <string name="user_description">Add a profile description</string>
+    <string name="empty_list">There aren\'t any news!</string>
+    <string name="loading">Loading...</string>
 </resources>

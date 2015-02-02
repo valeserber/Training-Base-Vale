@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="SignUpActionBarTheme"
-        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        parent="@style/Theme.AppCompat.Light">
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
     <style name="MyActionBar"

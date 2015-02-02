@@ -2,7 +2,7 @@ package com.example.valeriaserber.trainingapp.model;
 
 import java.io.Serializable;
 
-public class SessionObject implements Serializable {
+public class User implements Serializable {
 
     private String objectId;
     private String sessionToken;
@@ -13,9 +13,7 @@ public class SessionObject implements Serializable {
     private String picture;
     private String cover;
 
-    public String getObjectId() {
-        return objectId;
-    }
+    public String getObjectId() { return objectId; }
 
     public String getSessionToken() {
         return sessionToken;
@@ -43,11 +41,11 @@ public class SessionObject implements Serializable {
 
     public String getCover() { return cover; }
 
-    public SessionObject() {
+    public User() {
     }
 
-    public SessionObject(String objectId, String sessionToken, String username, String name,
-                         String location, String description, String picture, String cover) {
+    public User(String objectId, String sessionToken, String username, String name,
+                String location, String description, String picture, String cover) {
         this.objectId = objectId;
         this.sessionToken = sessionToken;
         this.username = username;

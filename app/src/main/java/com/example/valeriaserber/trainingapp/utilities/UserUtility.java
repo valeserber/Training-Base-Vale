@@ -2,9 +2,8 @@ package com.example.valeriaserber.trainingapp.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import com.example.valeriaserber.trainingapp.model.SessionObject;
+import com.example.valeriaserber.trainingapp.model.User;
 
 public class UserUtility {
 
@@ -18,7 +17,7 @@ public class UserUtility {
     public static final String PICTURE = "Picture";
     public static final String COVER = "Cover";
 
-    public static void saveUserData(SessionObject user, Context context) {
+    public static void saveUserData(User user, Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putString(OBJECT_ID, user.getObjectId());
         editor.putString(SESSION_TOKEN, user.getSessionToken());
@@ -31,7 +30,7 @@ public class UserUtility {
         editor.commit();
     }
 
-    public static SessionObject getUserData(Context context) {
+    public static User getUserData(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
 
         String objectId = prefs.getString(OBJECT_ID, null);
@@ -44,7 +43,7 @@ public class UserUtility {
         String cover = prefs.getString(COVER, null);
 
         if (objectId != null && sessionToken != null && username != null) {
-            SessionObject user = new SessionObject(objectId, sessionToken, username, name, location, description, picture, cover);
+            User user = new User(objectId, sessionToken, username, name, location, description, picture, cover);
             return user;
         }
         return null;
